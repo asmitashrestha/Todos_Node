@@ -4,7 +4,10 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
 const TodoSchema = new Schema({
-  title: String,
+  title:{
+    type:String,
+    required:true,
+  } ,
   status:Boolean,
 });
 
