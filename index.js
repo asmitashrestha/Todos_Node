@@ -8,7 +8,6 @@ app.use(express.json())  //global middleware have access to request, response an
 
 app.get('/todos',async(req,res,next)=>{
     try{
-
         let todos =await Todo.find()
         res.send({
         data:todos
@@ -16,9 +15,9 @@ app.get('/todos',async(req,res,next)=>{
       }
     catch(err){
         next(err)
-    }
-    
+    } 
 })
+
 
 app.post('/todos',async(req,res,next)=>{
     try{
@@ -26,11 +25,14 @@ app.post('/todos',async(req,res,next)=>{
             title: Joi.string().required(),
             status:Joi.required()
         });
-        let status = schema.validate(req.body,{abortEarly:false})
-        console.log(status);
-        console.log(status.err)
-        console.log(status.details)
-
+        let checkValidation = schema.validate(req.body,{abortEarly:false})
+        if(checkValidation.error){
+            return next(checkValidation)
+        }
+        console.log(checkValidation)
+        console.log(checkValidation.name)
+        console.log(checkValidation.details)
+        
         let todo = await Todo.create({
         title:req.body.title,
         status:req.body.status
